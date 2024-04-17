@@ -122,19 +122,13 @@ const updateUserImage = async (id, file) => {
 };
 
 const updateUser = async (id, payload) => {
-  let isExist = await User.findById(id);
+  const updatedUser = await User.findByIdAndUpdate(id, payload, { new: true });
 
-  if (!isExist) {
+  if (!updatedUser) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User not found');
   }
 
-  Object.keys(payload).forEach(key => {
-    isExist[key] = payload[key];
-  });
-
-  const result = await isExist.save();
-
-  return result;
+  return updatedUser;
 };
 
 export const UserService = {
